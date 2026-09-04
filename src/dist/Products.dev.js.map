@@ -1,0 +1,1 @@
+{"version":3,"sources":["Products.js"],"names":["Products"],"mappings":";;;;;;;AAAA;;;;AAEA,IAAMA,QAAQ,GAAG,SAAXA,QAAW,GAAM,CAEtB,CAFD;;eAIeA,Q,EAAU","sourcesContent":["import React from 'react';\r\n\r\nconst Products = () => {\r\n  \r\n};\r\n\r\nexport default Products; // <---"],"file":"Products.dev.js"}

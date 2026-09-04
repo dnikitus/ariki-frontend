@@ -1,0 +1,1 @@
+{"version":3,"sources":["Contact.js"],"names":["Contact"],"mappings":";;;;;;;AAAA;;;;AAEA,IAAMA,OAAO,GAAG,SAAVA,OAAU,GAAM,CAErB,CAFD;;eAIeA,O,EAAS","sourcesContent":["import React from 'react';\r\n\r\nconst Contact = () => {\r\n \r\n};\r\n\r\nexport default Contact; // <---"],"file":"Contact.dev.js"}

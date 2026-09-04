@@ -1,0 +1,1 @@
+{"version":3,"sources":["About.js"],"names":["About"],"mappings":";;;;;;;AAAA;;;;AAEA,IAAMA,KAAK,GAAG,SAARA,KAAQ,GAAM,CAEnB,CAFD;;eAIeA,K,EAAO","sourcesContent":["import React from 'react';\r\n\r\nconst About = () => {\r\n  \r\n};\r\n\r\nexport default About; // <---"],"file":"About.dev.js"}

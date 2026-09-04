@@ -1,0 +1,2366 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;&display=swap');
+
+/* Apply Inter globally to every text element */
+*, *::before, *::after {
+  font-family: 'Inter', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ==========================================================================
+   0. BASE STYLING & RESET
+   ========================================================================= */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* --- FULL PAGE IMAGE BACKGROUND --- */
+  background-image: url('./assets/background.png'); /* Change './bg.jpg' to your actual file name/path */
+  background-size: cover;            /* Scales image to completely fill the screen without distortion */
+  background-position: center;       /* Centers the background image perfectly */
+  background-repeat: no-repeat;      /* Stops the image from repeating/tiling */
+  background-attachment: fixed;      /* Locks image in place so content scrolls over it beautifully */
+  
+  /* Fallback color while image loads */
+  background-color: #fcfaf2; 
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* ==========================================================================
+   1. GLOBAL DESKTOP NAVBAR LAYOUT
+   ========================================================================== */
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: hsl(185, 51%, 10%); 
+  padding: 1.2em 2rem;       
+  width: 100%; 
+  box-sizing: border-box; 
+  border-bottom: 11px solid #C3973B; 
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar-logo {
+  margin-right: 1.5rem; /* Adjusted context push for tighter link integration */
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* --- MADE SLIGHTLY BIGGER --- */
+.logo-image {
+  height: 90px;               /* Scaled up slightly from 75px for more definition */
+  width: 90px;                /* Scaled up slightly from 75px */
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05); 
+}
+
+.navbar-logo .logo-text {
+  color: #F1DFB8; 
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 2.75rem;         
+  white-space: nowrap;
+}
+
+/* Desktop Navigation Link Row */
+.navbar-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  
+  /* --- MADE GAP SMALLER --- */
+  gap: 2rem;                  /* Brought links closer together for a cleaner grouping */
+}
+
+.navbar-links a {
+  color: #F1DFB8; 
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  font-weight: 500;           
+  
+  /* --- MADE FONT SMALLER --- */
+  font-size: 22px;          /* Sharpened from 1.5rem for premium minimalism */
+  letter-spacing: 0.5px;      
+}
+
+.navbar-links a:hover {
+  color: #C3973B;
+}
+
+/* Right-side aligned actions drawer */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto; 
+  gap: 2.75rem;               
+}
+
+.nav-icon {
+  color: #f1ebd9; 
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 2.75rem;             
+  height: 2.75rem;            
+  stroke-width: 2;            
+}
+
+.nav-icon:hover {
+  color: #b89244;
+  transform: scale(1.08);
+}
+
+.cart-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  position: absolute;
+  background-color: #a83232; 
+  border-radius: 50%;
+  bottom: -2px;
+  right: -5px;
+  width: 13px;                
+  height: 13px;
+  border: 2px solid #0d1b1e;  
+}
+
+.mobile-menu-toggle {
+  display: none;
+}
+
+
+/* ==========================================================================
+   2. MOBILE RESPONSIVE NAVBAR BREAKPOINT (Triggers at 1100px to prevent collision)
+   ========================================================================== */
+@media screen and (max-width: 1100px) {
+  .navbar {
+    padding: 1.25rem 5%; 
+    border-bottom-width: 8px;
+  }
+
+  .navbar-logo {
+    margin-right: 0;
+  }
+
+  /* Keeps the logo slightly smaller on the mobile/tablet view drawer layout */
+  .logo-image {
+    height: 80px; 
+    width: 80px;
+  }
+
+  .navbar-actions {
+    gap: 1.5rem; 
+  }
+
+  /* Expose Hamburger Button safely before links collide */
+  .mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    margin-left: 0.5rem;
+  }
+
+  .mobile-menu-toggle .bar {
+    width: 28px;
+    height: 3px;
+    background-color: #f1ebd9;
+    border-radius: 10px;
+    transition: all 0.3s linear;
+  }
+
+  .mobile-menu-toggle .bar.open:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .mobile-menu-toggle .bar.open:nth-child(2) {
+    opacity: 0;
+  }
+  .mobile-menu-toggle .bar.open:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Pulls text links safely down into the mobile drop-down menu drawer */
+  .navbar-links {
+    display: none; 
+    flex-direction: column;
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background-color: #0d1b1e;
+    border-bottom: 3px solid #b89244;
+    padding: 2rem 0;
+    gap: 1.75rem;
+    text-align: center;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .navbar-links.mobile-open {
+    display: flex;
+  }
+
+  .navbar-links a {
+    font-size: 1.4rem; 
+    display: block;
+    padding: 0.5rem 0;
+  }
+  
+  
+}
+
+/* ==========================================================================
+   3. GLOBAL DESKTOP FOOTER LAYOUT (Sticky fixed-to-bottom layout)
+   ========================================================================== */
+.site-footer {
+  position: flex;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: transparent; 
+  z-index: 1000; 
+  box-sizing: border-box;
+  border-top: 10px solid #C3973B;   
+  padding: 1.94rem 3rem;         
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  width: 100%;
+}
+
+.footer-left p {
+  color: #0d1b1e; 
+  font-family: inherit;
+  margin: 0;
+  font-size: 1rem;             
+  font-weight: 400;               
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;                   
+}
+
+.footer-social-icon {
+  color: #0d1b1e;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-social-icon svg {
+  width: 1.3rem;                 
+  height: 1.1rem;                
+}
+
+.footer-social-icon:hover {
+  color: #b89244; 
+  transform: translateY(-3px); 
+}
+
+
+/* ==========================================================================
+   4. MOBILE RESPONSIVE FOOTER BREAKPOINT (Screens <= 768px)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  .site-footer {
+    padding: 1.75rem 1.25rem; 
+    border-top-width: 8px;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 1.25rem; 
+    text-align: center;
+  }
+  
+  .footer-right {
+    gap: 2.5rem; 
+  }
+}
+
+.hero-section {
+  width: 100%;
+  min-height: calc(100vh - 230px); 
+  
+  /* Image rendering behavior (Moved the URL link over to JS) */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Center alignment layout engines */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   5. MINIMAL HOME HERO LAYOUT (Matches Image Mockup Perfectly)
+   ========================================================================== */
+.hero-section {
+  width: 100%;
+  /* Calculates exact space so the image seamlessly fits edge-to-edge */
+  height: calc(100vh - 224px); 
+  
+  /* Background Image Layout */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Centering Engine */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Simple text container */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+  width: 100%;
+  padding: 0 1rem;
+
+  /* --- PULLS SECTION UP TO ALIGN WITH IMAGE CENTER --- */
+  transform: translateY(-40px); /* Adjust this value up or down (-20px, -50px, etc.) to get it pixel-perfect on your screen */
+}
+
+/* "ზღაპარს ასაკი არ აქვს..." */
+.hero-title {
+  color: #F1DFB8; 
+  font-size: 2.6rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+  width: 300px;
+}
+
+/* Supporting subtext */
+.hero-subtitle {
+  color: #F1DFB8; /* Subtle golden tint matching the text on the illustration fire */
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0 0 2rem 0;
+  text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Minimal "ჩვენი წიგნები" pill button */
+.hero-btn {
+  background-color: #0d1b1e; 
+  color: #F1DFB8;
+  border: 1.5px solid #F1DFB8; 
+  border-radius: 7px; /* Makes it a sleek pill capsule shape */
+  padding: 0.7rem 2.3rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hero-btn:hover {
+  background-color: #C3973B;
+  color: #0d1b1e;
+}
+
+/* Mobile responsive adjustments */
+@media screen and (max-width: 768px) {
+  .hero-section {
+    height: calc(100vh - 110px);
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+
+/* ==========================================================================
+   7. CLEAN ABOUT PAGE CONTENT LAYOUT (Centered Typography)
+   ========================================================================== */
+.about-page-container {
+  width: 100%;
+  /* Dynamic view bounds matching the custom landing view sizing */
+  min-height: calc(100vh - 275px); 
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 4rem 2rem;
+}
+
+/* Constrained maximum-width readability box */
+.about-content-card {
+  max-width: 800px; /* Forces paragraphs into a clean golden ratio aspect rectangle */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* Text aligns naturally to the left as shown in mockup */
+}
+
+/* Golden-Amber About Title ("ჩვენს შესახებ") */
+.about-main-heading {
+  color: #A36A32; /* Authentic layout branding amber tone */
+  font-size: 20px;
+  font-weight: 450;
+  margin: 0 0 2rem 0;
+  letter-spacing: 0.5px;
+}
+
+/* Body Content Paragraphs block formatting */
+.about-paragraph {
+  color: #0C2325; /* Crisp dark-slate text contrast */
+  font-size: 18px;
+  line-height: 1.75; /* Elegant vertical space tracking between line runs */
+  margin: 0 0 2rem 0; /* Uniform separation block cushions */
+  letter-spacing: 0.25px;
+}
+
+/* Remove margin cushion on the final context block */
+.about-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* Mobile responsive adjustments */
+@media screen and (max-width: 768px) {
+  .about-page-container {
+    min-height: calc(100vh - 200px);
+    padding: 2.5rem 1.25rem;
+  }
+  
+  .about-main-heading {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .about-paragraph {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* ==========================================================================
+   8. CONTACT PAGE GRID LAYOUT (Matches image_2ec87f.jpg)
+   ========================================================================== */
+.contact-page-container {
+  width: 100%;
+  min-height: calc(100vh - 275px); 
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
+
+/* Two-column central grid framework */
+.contact-grid-wrapper {
+  max-width: 950px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 0.7fr 1.2fr; /* Left links take slightly less space than form */
+  gap: 6rem; /* Wide gap separating information from fields */
+  align-items: flex-start;
+}
+
+/* Left Column: Contact Links Styling */
+.contact-info-column {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  padding-top: 0.7rem;
+  gap: 0.65rem;
+}
+
+.contact-link-item {
+  color: #0d1b1e;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  text-decoration: underline;
+}
+
+.contact-link-item-number {
+  color: #0d1b1e;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.contact-link-item:hover {
+  color: #C3973B; /* Subtle golden feedback on hover */
+}
+
+/* Right Column: Input Elements Form Block */
+.contact-form-column {
+  display: flex;
+  flex-direction: column;
+  width: 376px;
+  gap: 1.25rem; /* Space between input boxes */
+}
+
+/* Base style for inputs and textarea */
+.contact-input-field {
+  width: 376px;
+  padding: 0.5rem 0.8rem;
+  font-size: 1.05rem;
+  font-family: inherit;
+  background-color: #ffffff;
+  border: 1.5px solid black; /* Muted gray border framework */
+  border-radius: 6px;
+  box-sizing: border-box;
+  outline: none;
+  color: #0d1b1e;
+  transition: border-color 0.2s ease;
+}
+
+.contact-input-field:focus {
+  border-color: #C3973B; /* Highlights gold when active */
+}
+
+/* Custom textarea adjustments */
+.contact-textarea-field {
+  resize: none; /* Prevents user from pulling it out of layout scale */
+}
+
+/* Centers the action button container row under the fields */
+.contact-btn-row {
+  display: flex;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Sleek pill action submit button */
+.contact-submit-btn {
+  background-color: #0d1b1e; /* Core dark navbar theme color */
+  color: #F1DFB8;
+  border: 1.5px solid #C3973B;
+  border-radius: 7px; /* Pill layout shape matching home page button */
+  padding: 0.75rem 2.75rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-submit-btn:hover {
+  background-color: #C3973B;
+  color: #0d1b1e;
+}
+
+/* ==========================================================================
+   9. RESPONSIVE MOBILE OVERRIDES FOR CONTACT
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  .contact-page-container {
+    min-height: calc(100vh - 200px);
+    padding: 2.5rem 1.25rem;
+  }
+
+  /* Stack columns vertically on phones */
+  .contact-grid-wrapper {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .contact-info-column {
+    align-items: center; /* Center links on mobile */
+    text-align: center;
+    padding-top: 0;
+  }
+
+  .contact-link-item {
+    font-size: 1.1rem;
+  }
+
+  .contact-input-field {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* ==========================================================================
+   10. CHRONOLOGICAL TIMELINE LAYOUT (With Fine-Tuned Mockup Alignments)
+   ========================================================================== */
+.events-page-container {
+  width: 100%;
+  min-height: calc(100vh - 180px); /* Adjusts dynamically to help push footer down */
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 5rem 1.5rem 8rem 1.5rem; /* Bumped bottom padding to 10rem for that deep breathing room */
+}
+
+.timeline-wrapper {
+  max-width: 680px; 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem; 
+}
+
+.timeline-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+/* Left Date Assembly: Stacks the dark box and the detached text month label */
+.timeline-date-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* Clean dark square holding ONLY the day number */
+.timeline-day-box {
+  background-color: #262c2c; 
+  color: #C3973B; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.badge-day {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Detached Month styling: sitting directly out in the open space below the box */
+.badge-month {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #A36A32; 
+  margin-top: 0.6rem; /* Clean vertical spacing keeping it separated from the box */
+  text-align: center;
+}
+
+.timeline-content-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: left; 
+}
+
+.event-row-title {
+  color: #A36A32; 
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0 0 1.5rem 0;
+  width: 100%; 
+  text-align: left;
+}
+
+.event-image-container {
+  width: 100%;
+  max-width: 280px; 
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto; 
+}
+
+/* Added explicit crisp outline borders to match the design assets framework */
+.event-row-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #A36A32; /* Thin, clean outline framing the photo art */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  display: block;
+  object-fit: contain;
+}
+
+.event-row-description {
+  color: #0d1b1e;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+  font-weight: 400;
+  width: 100%; 
+  text-align: left;
+}
+
+/* ==========================================================================
+   11. SMARTPHONE SCALE-DOWN SAFEGUARDS
+   ========================================================================== */
+@media screen and (max-width: 600px) {
+  .events-page-container {
+    padding: 2rem 1rem 4rem 1rem;
+  }
+  
+  .timeline-wrapper {
+    gap: 3.5rem;
+  }
+  
+  .timeline-row {
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+  }
+  
+  /* Horizontal flow on small phone viewports so it looks natural inline */
+  .timeline-date-column {
+    flex-direction: row;
+    gap: 0.6rem;
+    align-self: flex-start; 
+    margin-top: 0;
+  }
+  
+  .timeline-day-box {
+    width: 42px;
+    height: 42px;
+  }
+
+  .badge-day {
+    font-size: 1.1rem;
+  }
+  
+  .badge-month {
+    margin-top: 0;
+    font-size: 0.95rem;
+  }
+
+  .timeline-content-block {
+    align-items: flex-start; 
+  }
+  
+  .event-image-container {
+    max-width: 100%; 
+  }
+}
+
+/* ==========================================================================
+   12. FOOTER LAYOUT (Matches Right Side Mockup Perfectly)
+   ========================================================================== */
+footer {
+  width: 100%;
+  background-color: #ffffff; /* Clean white background */
+  border-top: 4px solid #b89244; /* The sleek gold horizontal line from the photo */
+  padding: 1.5rem 8%; /* Generous side padding keeps text inline with header layout */
+  display: flex;
+  justify-content: space-between; /* Pushes text left, icons right */
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: auto; /* Ensures it stays at the absolute bottom of short pages */
+}
+
+/* Left side copyright text */
+.footer-text {
+  color: #0d1b1e;
+  font-weight: 400;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Right side social icons container */
+.footer-socials {
+  display: flex;
+  gap: 1.5rem; /* Perfect distance between Instagram and Facebook icons */
+  align-items: center;
+}
+
+.footer-socials a {
+  color: #0d1b1e;
+  font-size: 1.25rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.footer-socials a:hover {
+  color: #b89244; /* Smooth gold hover effect */
+}
+
+/* Responsive adjustments for phones */
+@media screen and (max-width: 600px) {
+  footer {
+    flex-direction: column; /* Stacks text and icons vertically on small screens */
+    gap: 1rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+}
+/* ==========================================================================
+   13. ABOUT US PAGE TYPOGRAPHY (Matches Right Side Mockup)
+   ========================================================================== */
+.about-page-container p,
+.about-content p {
+  font-family: 'Inter', sans-serif;
+  color: #0d1b1e;
+  font-size: 1.05rem;
+  
+  /* FIX 1: Tightens the space between sentences inside the paragraph */
+  line-height: 1.55; 
+  
+  /* FIX 2: Slashes the large empty block gap between separate paragraph blocks */
+  margin-top: 0;
+  margin-bottom: 1.1rem; 
+  
+  text-align: left;
+}
+
+/* Optional: Ensure the heading spacing matches the tight layout */
+.about-page-container h2,
+.about-content h2 {
+  color: #A36A32;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   17. AUTHENTICATION MODULES (Login / Recover / Register)
+   ========================================================================== */
+.auth-page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Matches screen layout placement hooks */
+  padding: 6rem 1.5rem;
+  box-sizing: border-box;
+  margin-bottom: 0px;
+}
+
+.auth-card-wrapper {
+  width: 100%;
+  max-width: 320px; /* Precise layout width matching inputs */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-form-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Clean vertical distance gaps between input slots */
+}
+
+/* Hard outline minimalist layout inputs */
+.auth-input-field {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  color: #0d1b1e;
+  background-color: #ffffff;
+  border: 1px solid #000000; /* Flat black outline borders from screenshots */
+  border-radius: 0px; /* Removes rounded corner defaults */
+  box-sizing: border-box;
+  outline: none;
+}
+
+.auth-input-field::placeholder {
+  color: #a3a3a3; /* Soft gray placeholder text values */
+  font-size: 0.88rem;
+}
+
+/* Deep dark solid action interaction triggers */
+.auth-action-btn {
+  background-color: #0D1B1E; /* Midnight branding accent block colors */
+  color: #F1DFB8; /* Warm brand beige typography contrast */
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  align-self: center; /* Centers button dynamically beneath inputs */
+  transition: background-color 0.2s ease;
+}
+
+.auth-action-btn:hover {
+  background-color: #1a3237;
+}
+
+/* Context Link Arrays styling */
+.auth-nav-links {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.auth-toggle-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: #333333;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+
+.auth-toggle-link:hover {
+  color: #C3973B; /* brand gold highlight shift on tracking pointer hover */
+  text-decoration: underline;
+}
+/* Container sizing and gap layout settings */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Precise distance balancing between the items */
+}
+
+/* Base icon wrapper settings */
+.nav-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Sizing and alignment constraints for your custom image assets */
+.nav-custom-icon {
+  width: 60px;        /* Matches the elegant, thin silhouette size from the mockup */
+  height: 60px;
+  object-fit: contain; /* Prevents stretching if your image squares aren't perfectly 1:1 */
+  display: block;
+}
+
+/* Subtle feedback shift on hover since color filter changes on raw images can be tricky */
+.nav-icon-link:hover {
+  transform: scale(1.05); /* Slight lift animation for clean interactive feedback */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=FiraGO:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   GLOBAL LAYOUT & FOOTER FIXES
+   ========================================================================== */
+
+
+/* Clean Footer Component wrapper boundaries */
+
+/* ==========================================================================
+   PRODUCTS HUB CARD GRID - SYNCHRONIZED
+   ========================================================================== */
+.products-page-container {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom:40px;
+  padding: 5rem 2rem 2rem 2rem;
+  box-sizing: border-box;
+  flex: 1; /* Naturally pushes footer down without creating ghost padding */
+}
+
+/* FIXED: Using Flexbox layout instead of CSS Grid so incomplete rows center beautifully */
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem 4rem; /* Keeps your custom row and column gutters intact */
+  justify-content: center; /* Centers items horizontally on any dangling/incomplete rows */
+  align-items: stretch; /* Forces all cards in a row to capture matching structural heights */
+}
+
+/* Card framing mirroring image_0ccaf3.jpg */
+.product-card {
+  background-color: rgba(255, 255, 255, 0.45); /* Soft glass transparency */
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  /* FIXED: Enforces identical block footprints per element */
+  width: calc(25% - 3rem); 
+  min-width: 280px;
+  max-width: 300px;
+  height: 466.33px; 
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+}
+
+/* Book Title Constraints */
+.product-title-section {
+  width: 100%;
+  height: 48px; /* Fixed block forces identical spacing regardless of title line breaks */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.product-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #A36A32;
+  text-align: center;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Cover Sizing Constraints */
+.product-image-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.12);
+  margin-bottom: 1.5rem;
+}
+
+.product-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Meta Purchase Option Rows */
+.product-meta-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: auto; /* FIXED: Always pushes variant lines perfectly flat down to the bottom */
+}
+
+.product-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-top: 0.25rem;
+}
+
+.price-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  color: black;
+}
+
+.price-amount {
+  color: #0d1b1e;
+  font-weight: 500;
+}
+
+/* Action Trigger Box - Cleaned and prepared for your incoming images */
+.add-to-cart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: #bfa36a; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, transform 0.15s ease;
+}
+
+.cart-row-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.add-to-cart-btn:hover {
+  color: #0d1b1e;
+  transform: scale(1.1);
+}
+
+/* Responsive Scaling Constraints */
+@media (max-width: 600px) {
+  .products-page-container {
+    padding: 3rem 1.5rem;
+  }
+  .products-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  .product-card {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Forces the app to take up at least the full screen height */
+}
+
+/* Apply this to your page content wraps (like .products-page-container)
+*/
+.page-content {
+  flex: 1; /* Automatically stretches to fill all empty space, pushing the footer down */
+}
+
+/* Clean Footer Component boundaries */
+footer {
+  width: 100%;
+  padding: 2rem 4%;
+  box-sizing: border-box;
+  background-color: transparent; 
+  border-top: 1px solid rgba(184, 146, 68, 0.2);
+  margin-top: auto; /* Final safety fallback to pin it to the bottom */
+}
+
+/* ==========================================================================
+   FIXED: UNIFIED META FOOTPRINT 
+   ========================================================================== */
+.product-meta-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: auto; /* Keeps price rows cleanly anchored to the bottom edge */
+  
+  /* FIX: Explicitly match the height space of a 2-variant layout */
+  min-height: 72px; 
+  justify-content: flex-start;
+}
+/* Price row stays completely uniform now */
+.product-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 32px; /* Fixed track height so singular rows don't stretch vertically */
+}
+
+
+.cart-row-icon-img {
+  width: 40px;  /* Keeps the asset dimensions perfectly matching your previous layout */
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ==========================================================================
+   PRODUCT DETAILS VIEW - PIXEL PERFECT INTER CONFIGURATION
+   ========================================================================== */
+
+.product-card-link-wrapper {
+  text-decoration: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.details-page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6rem 2rem 4rem 2rem; 
+  box-sizing: border-box;
+}
+
+/* Parent horizontal flex grid */
+.details-layout-holder {
+  
+  gap: 10rem;       /* Centers image and text column vertically */
+     /* Centers the entire component horizontally */
+}
+
+/* Left panel for book cover profile */
+.details-image-panel {
+  flex: 0 0 310px; 
+  max-width: 310px; 
+}
+
+.details-cover-frame {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.12);
+  margin-top: 8px;
+}
+
+.details-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Right text panel layout */
+.details-info-panel {
+  flex: 1;
+  max-width: 590px; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Keeps text lines left-aligned */
+}
+
+/* Crisp, premium title text layout */
+.details-main-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px; /* Fixed: Title font size 18 */
+  font-weight: 500;
+  color: #A36A32;   /* Restored your custom gold color accent */
+  margin: 0 0 1.2rem 0;
+  letter-spacing: -0.2px;
+}
+
+/* Summary description text rules */
+.details-description-text {
+  font-family: 'Inter', sans-serif; /* Fixed: Inter font family */
+  font-size: 18px;                 /* Fixed: Description font size 14 */
+  font-weight: 400;
+  color: #0C2325;
+  line-height: 1.2;
+  margin: 0 0 1.2rem 0;
+}
+
+/* Fine metadata attributes block rules */
+.details-info-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-family: 'Inter', sans-serif; /* Fixed: Inter font family */
+  font-size: 14px;                 /* Fixed: Info font size 12 */
+  color: #0C2325;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Pricing variant controls section layout block */
+.details-variants-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; 
+  margin-bottom: 1.5rem;
+}
+
+/* Single layout line variant tracker rule */
+.details-qty-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+}
+
+/* Label text properties mapping */
+.details-variant-label {
+  font-family: 'Inter', sans-serif; /* Fixed: Inter font family */
+  font-size: 20px; 
+  color: #1a1a1a;
+}
+
+/* Standardized price tag highlights tracking */
+.details-price-tag {
+  font-family: 'Inter', sans-serif;
+  color: #0C2325;
+  font-weight: 500;
+  font-size: 20px;
+  margin-left: 0.25rem;
+}
+
+/* Clean, dark, compact rounded layout block buttons */
+.qty-counter-block {
+  display: flex;
+  align-items: center;
+  background-color: #0d1b1e; 
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-display-value {
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Image styling inside the button */
+.details-cart-btn-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); 
+  display: inline-block;
+  margin-right: 5px;
+}
+
+/* Minimal purchase activation button mapping */
+.details-submit-cart-btn {
+  background-color: #0d1b1e;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.6rem; 
+  font-family: 'Inter', sans-serif; /* Fixed: Inter font family */
+  font-size: 16px; 
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem; 
+  transition: background-color 0.2s ease;
+  margin: 0.5rem auto 0 auto; 
+}
+
+.details-submit-cart-btn:hover {
+  background-color: #193237;
+}
+
+.info-meta-line
+{
+  max-width: 312px;
+  line-height: 1.2;
+}
+/* ==========================================================================
+   SHOPPING CART VIEW - STRUCTURE ONLY REVISION
+   ========================================================================== */
+
+.cart-page-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3.3rem 1rem 2rem 1rem; 
+  box-sizing: border-box;
+  display: flex;         
+  justify-content: center;
+  align-items: center;
+}
+
+.cart-layout-holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;           
+  max-width: 900px;      /* Bound the container to the static mockup framework size */
+}
+
+.cart-items-list {
+  width: 100%;           
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Kept your exact styles, just replaced 'width: 800px' with 'width: 100%' so it fills the 680px container smoothly */
+.cart-item-card {
+  background: transparent;
+  border-radius: 2px;
+  padding: 2rem 2rem;
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;           
+}
+
+.cart-item-main-details {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+.cart-item-cover-frame {
+  width: 100px; 
+  height: 100px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.cart-item-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-item-text-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cart-item-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #A36A32; 
+  margin: 0;
+}
+
+.cart-item-variants-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+}
+
+.cart-spec-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: black;
+}
+
+.cart-spec-price {
+  font-weight: 500;
+  color: #111111;
+}
+
+.cart-item-controls-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+  gap: 1.3rem;
+}
+
+.cart-trash-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-trash-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.cart-counters-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.cart-counter-row-wrapper {
+  height: 28px; 
+  display: flex;
+  align-items: center;
+}
+
+.cart-summary-footer-panel {
+  width: 100%;
+  max-width: 800px;      /* Pin checkout block edge-to-edge with card profiles */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cart-grand-total-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  color: #0C2325;
+}
+
+.total-sum-highlight {
+  color: #0C2325;
+  margin-left: 0.2rem;
+}
+
+/* ==========================================================================
+   PRODUCT DETAILS VIEW STRUCTURAL BOUNDS
+   ========================================================================== */
+
+.details-page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem 4rem 2rem; 
+  box-sizing: border-box;
+}
+
+.details-layout-holder {
+  display: flex;
+  gap: 4rem;      
+  justify-content: center;   
+  width: 100%;
+}
+
+.product-card-link-wrapper {
+  text-decoration: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ==========================================================================
+   SHARED UI ELEMENTS (UNALTERED INTERIOR TOKENS)
+   ========================================================================== */
+
+.qty-counter-block, .cart-qty-counter-block {
+  display: flex;
+  align-items: center;
+  background-color: #0d1b1e; 
+  border-radius: 4px;
+  padding: 1px 2px;
+}
+
+.qty-btn, .cart-qty-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-qty-btn {
+  width: 22px;
+  height: 22px;
+}
+
+.qty-display-value, .cart-qty-display-value {
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-qty-display-value {
+  font-size: 11px;
+  min-width: 18px;
+}
+
+.details-cart-btn-icon, .cart-checkout-btn-icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); 
+  display: inline-block;
+}
+
+.details-submit-cart-btn, .cart-checkout-submit-btn {
+  background-color: #0d1b1e;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.6rem; 
+  font-family: 'Inter', sans-serif; 
+  font-size: 17px; 
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem; 
+  transition: background-color 0.2s ease;
+  margin: 0.5rem auto 0 auto; 
+}
+
+.cart-checkout-submit-btn {
+  font-size: 14px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  margin: 0;
+}
+
+.details-submit-cart-btn:hover, .cart-checkout-submit-btn:hover {
+  background-color: #193237;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  min-height: 50vh;
+  font-family: 'Inter', sans-serif;
+  color: #A36A32;
+  font-size: 23px;
+}
+
+.cart-trash-btn {
+  background: black;
+  border: none;
+  cursor: pointer;
+  padding: 6.5px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* CHANGED: Replaced #111111 with your gold brand color */
+  color: #F1DFB8; 
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.cart-trash-btn:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+}
+
+.cart-trash-svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* If you used the plain text option instead */
+.cart-trash-btn.text-close-mark {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #A36A32; 
+}
+
+/* ==========================================================================
+   TOP HEADER TOAST ALERT STYLES
+   ========================================================================== */
+
+.custom-toast-alert {
+  position: fixed;
+  top: 25px;             /* Positions it right inside your header bar height */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  
+  background-color: #f4eee1; /* Light cream background matching your theme */
+  border: 1px solid #dcd4c3;
+  border-radius: 4px;
+  padding: 0.80rem 1.4rem;
+  
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.12);
+  animation: slideDownToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDownToast {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.toast-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(66, 122, 91, 0.12); /* Subtle green backdrop halo */
+  flex-shrink: 0;
+}
+
+.toast-message-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2c2c2c;
+  white-space: nowrap;
+}
+
+.toast-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  color: #777777;
+  cursor: pointer;
+  padding: 0 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+
+.toast-close-btn:hover {
+  color: #111111;
+}
+
+/* ==========================================================================
+   AUTHENTICATION MODAL STYLES
+   ========================================================================== */
+
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.auth-card-box {
+  background-color: #f4eee1;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  border-radius: 6px;
+  position: relative;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+}
+
+.auth-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #111;
+}
+
+.auth-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  color: #A36A32;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-error-banner {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.auth-switch-text {
+  text-align: center;
+  font-size: 13.5px;
+  margin-top: 1.5rem;
+  color: #444;
+}
+
+.auth-switch-link {
+  color: #A36A32;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.3rem;
+}
+
+.account-container {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 40px;
+}
+
+/* Nav Buttons Row matching design */
+.account-tab-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #0f1c24;
+  color: #c4c4c4;
+  border: 1px solid #1a2c38;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover, .tab-btn.active {
+  background-color: #172a37;
+  color: #ffffff;
+  border-color: #2b4557;
+}
+
+.empty-message {
+  color: #a4916c;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+/* Auth Card Styles */
+.auth-card {
+  background-color: #0f1c24;
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 380px;
+  color: white;
+}
+
+.auth-card input, .profile-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #2b4557;
+  background: #172a37;
+  color: white;
+}
+
+.auth-card button[type="submit"], .profile-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #a4916c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.auth-toggle {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.auth-toggle button {
+  background: none;
+  border: none;
+  color: #a4916c;
+  margin-left: 6px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-error {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+/* Dashboard Action Buttons Bar */
+.dashboard-btn-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.dashboard-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #0b1921;
+  color: #9eb1bd;
+  border: 1px solid #1c2e39;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.dashboard-nav-btn.active, .dashboard-nav-btn:hover {
+  background-color: #152632;
+  color: #ffffff;
+  border-color: #2a4150;
+}
+
+/* Empty Orders Text */
+.empty-orders-view {
+  text-align: center;
+  margin-top: 40px;
+  color: #c4a77d;
+  font-size: 20px;
+}
+
+/* Error/Success Notifications */
+.auth-error-banner {
+  color: #ff6b6b;
+  font-size: 13px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.auth-success-banner {
+  color: #51cf66;
+  font-size: 13px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* Container & Layout */
+.auth-page-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 40vh;
+}
+
+/* Dashboard Navigation Bar */
+.dashboard-btn-group {
+  display: flex;
+  gap: 12px;
+  background: rgba(17, 34, 41, 0.05);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  margin-bottom: 32px;
+}
+
+.dashboard-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: #112229;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.dashboard-nav-btn:hover {
+  background: rgba(17, 34, 41, 0.08);
+}
+
+.dashboard-nav-btn.active {
+  background: #112229;
+  color: #d4af37;
+  box-shadow: 0 4px 12px rgba(17, 34, 41, 0.15);
+}
+
+.logout-btn {
+  color: #8b2500;
+}
+
+.logout-btn:hover {
+  background: rgba(139, 37, 0, 0.08);
+  color: #a83232;
+}
+
+/* Cards & Content Area */
+.dashboard-tab-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Container */
+.auth-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+  padding-bottom: 60px;
+  min-height: calc(100vh - 400px);
+  box-sizing: border-box;
+}
+
+/* Dashboard Nav Buttons */
+.dashboard-btn-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 32px;
+}
+
+.dashboard-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 40px;
+  border-radius: 6px;
+  border: 1px solid #112229;
+  background: #112229;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-nav-btn.active {
+  background: #091519;
+  border-color: #091519;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.dashboard-nav-btn:hover {
+  opacity: 0.9;
+}
+
+/* Content Area */
+.dashboard-tab-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.empty-orders-view {
+  color: rgb(163, 106, 50);
+  font-size: 20px;
+  margin-top: 24px;
+}
+
+/* Form Container & Inputs */
+.auth-card-wrapper {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-form-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-input-field {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 4px;
+  border: 1px solid #112229;
+  background: #ffffff;
+  font-size: 14px;
+  color: #112229;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.auth-input-field:focus {
+  border-color: #d4af37;
+}
+
+/* Buttons */
+.auth-action-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border-radius: 4px;
+  border: none;
+  background: #112229;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.auth-action-btn:hover {
+  background: #1c353f;
+}
+
+.auth-action-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Links */
+.auth-nav-links {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.auth-nav-links.single-link {
+  justify-content: center;
+}
+
+.auth-toggle-link {
+  color: #112229;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth-toggle-link:hover {
+  color: #d4af37;
+}
+
+/* Banners */
+.auth-error-banner,
+.auth-success-banner {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.auth-error-banner {
+  background: #fde8e8;
+  color: #9b1c1c;
+  border: 1px solid #f8b4b4;
+}
+
+.auth-success-banner {
+  background: #def7ec;
+  color: #03543f;
+  border: 1px solid #84e1bc;
+}
+
+/* Container & Wrapper */
+.profile-edit-wrapper {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+.profile-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Titles */
+.section-title {
+  color: rgb(163, 106, 50);;
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Form & Inputs */
+.auth-form-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.auth-input-field {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 2px;
+  border: 1px solid #112229;
+  background: #ffffff;
+  font-size: 13px;
+  color: #112229;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.auth-input-field::placeholder {
+  color: #777;
+}
+
+/* Save Buttons */
+.auth-action-btn {
+  width: 140px;
+  padding: 8px 0;
+  margin-top: 6px;
+  border-radius: 4px;
+  border: none;
+  background: #112229;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.2s ease;
+}
+
+.auth-action-btn:hover {
+  opacity: 0.9;
+}
+
+/* Dashboard Navigation - Mobile Responsiveness */
+@media (max-width: 600px) {
+  .dashboard-btn-group {
+    display: flex;
+    flex-direction: column; /* Stacks buttons vertically on small screens */
+    gap: 10px;
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .dashboard-nav-btn {
+    width: 100%;
+    justify-content: center; /* Centers icon and text */
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+}
+
+/* Product Details - Mobile Responsiveness */
+@media (max-width: 768px) {
+  /* Stack the main container vertically */
+  .product-details-container,
+  .product-details-wrapper {
+    flex-direction: column;
+    padding: 16px;
+    gap: 24px;
+    width: 100%;
+  }
+
+  /* Full width for media / image section */
+  .product-image-container,
+  .product-gallery,
+  .product-media-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .product-main-image {
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+    object-fit: contain;
+  }
+
+  /* Thumbnail gallery scroll horizontally on mobile */
+  .product-thumbnails,
+  .thumbnail-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 8px;
+  }
+
+  .thumbnail-image {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  /* Full width for product info, title, and form elements */
+  .product-info-container,
+  .product-details-content {
+    width: 100%;
+    padding: 0;
+  }
+
+  .product-title {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .product-price {
+    font-size: 18px;
+  }
+
+  /* Make quantity selector and Add to Cart button stack cleanly */
+  .product-actions,
+  .add-to-cart-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .add-to-cart-btn,
+  .buy-now-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+  }
+}
