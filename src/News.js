@@ -7,7 +7,10 @@ const News = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:1337/api/events?populate=*&sort=eventDate:asc')
+    // Dynamically use live Vercel env variable or fallback to live Render URL
+    const API_URL = process.env.REACT_APP_API_URL || 'https://ariki-backend.onrender.com';
+
+    fetch(`${API_URL}/api/events?populate=*&sort=eventDate:asc`)
       .then((res) => res.json())
       .then((resData) => {
         const finalArray = resData.data || resData;
