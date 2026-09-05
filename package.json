@@ -12,6 +12,7 @@
     "@types/nodemailer": "^8.0.1",
     "firebase": "^12.16.0",
     "nodemailer": "^9.0.6",
+    "pg": "^8.23.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "^6.30.4",
