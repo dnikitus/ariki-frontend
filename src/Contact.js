@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.css'; 
-
-const API_URL = 'http://localhost:1337/api/contact/send';
+import { API_URL } from './config';
 
 const ToastAlert = ({ message, isOpen, onClose }) => {
   useEffect(() => {
@@ -48,7 +47,7 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_URL}/api/contact/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

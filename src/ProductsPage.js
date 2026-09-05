@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
+import { API_URL } from './config';
 import './index.css'; 
 import cartIconImg from './assets/shopping-bag-add-200h.png'; 
 
@@ -48,7 +49,7 @@ const ProductsPage = () => {
   const { addSingleVariantDirectly } = useCart();
 
   useEffect(() => {
-    fetch('http://localhost:1337/api/products?populate=*')
+    fetch(`${API_URL}/api/products?populate=*`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) setProducts(data.data);
@@ -85,7 +86,10 @@ const ProductsPage = () => {
           if (product.cover && product.cover.length > 0) {
             imgUrl = product.cover[0].url || "";
           }
-          const fullImgUrl = imgUrl ? `http://localhost:1337${imgUrl}` : '';
+
+          const fullImgUrl = imgUrl 
+            ? (imgUrl.startsWith('http') ? imgUrl : `${API_URL}${imgUrl}`) 
+            : '';
 
           return (
             <div key={product.id} className="product-card">

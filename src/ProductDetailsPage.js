@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCart } from './CartContext';
+import { API_URL } from './config';
 import './index.css';
 import cartIconImg from './assets/shopping-bag-add-200h.png'; 
 
@@ -50,7 +51,7 @@ const ProductDetailsPage = () => {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:1337/api/products/${id}?populate=*`)
+    fetch(`${API_URL}/api/products/${id}?populate=*`)
       .then((res) => res.json())
       .then((resData) => {
         if (resData.data) {
@@ -94,7 +95,10 @@ const ProductDetailsPage = () => {
   if (product.cover && product.cover.length > 0) {
     imgUrl = product.cover[0].url || "";
   }
-  const fullImgUrl = imgUrl ? `http://localhost:1337${imgUrl}` : '';
+  
+  const fullImgUrl = imgUrl 
+    ? (imgUrl.startsWith('http') ? imgUrl : `${API_URL}${imgUrl}`) 
+    : '';
 
   return (
     <div className="details-page-container">
@@ -105,7 +109,6 @@ const ProductDetailsPage = () => {
       />
 
       <div className="details-layout-holder">
-        
         <div className="details-image-panel">
           <div className="details-cover-frame">
             {fullImgUrl ? (
@@ -150,7 +153,6 @@ const ProductDetailsPage = () => {
             კალათაში დამატება
           </button>
         </div>
-
       </div>
     </div>
   );

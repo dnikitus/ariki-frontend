@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EventItem from './EventItem';
+import { API_URL } from './config';
 import './index.css';
 
 const News = () => {
@@ -7,15 +8,11 @@ const News = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Dynamically use live Vercel env variable or fallback to live Render URL
-    const API_URL = process.env.REACT_APP_API_URL || 'https://ariki-backend.onrender.com';
-
     fetch(`${API_URL}/api/events?populate=*&sort=eventDate:asc`)
       .then((res) => res.json())
-      .then((resData) => {
-        const finalArray = resData.data || resData;
-        if (Array.isArray(finalArray)) {
-          setEvents(finalArray);
+      .then((data) => {
+        if (data.data) {
+          setEvents(data.data);
         }
         setLoading(false);
       })
@@ -25,19 +22,20 @@ const News = () => {
       });
   }, []);
 
-  if (loading) {
-    return <div className="events-loading">იტვირთება ღონისძიებები...</div>;
-  }
-
-  if (events.length === 0) {
-    return <div className="events-loading">ღონისძიებები ვერ მოიძებნა. დაამატეთ ახალი პოსტი Strapi-დან!</div>;
-  }
+  if (loading) return <div className="loading-container">იტვირთება...</div>;
 
   return (
-    <div className="events-page-container">
-      <div className="timeline-wrapper">
-        {events.map((event, index) => (
-          <EventItem key={event.id || index} event={event} />
+    <div className="news-page-container">
+      <h2 className="news-page-header">სიახლეები და ღონისძიებები</h2>
+      <div className="news-events-grid">
+        {events.map((event) => (
+          <EventItem
+            key={event.id}
+            title={event.title}
+            description={event.description}
+            cover={event.cover}
+            eventDate={event.eventDate}
+          />
         ))}
       </div>
     </div>

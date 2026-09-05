@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import './Account.css'; // Add your styling matching the theme
-
-const STRAPI_URL = 'http://localhost:1337';
+import './Account.css'; 
+import { API_URL } from './config';
 
 const Account = () => {
   const [token, setToken] = useState(localStorage.getItem('jwt') || null);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
 
-  // Auth form states
   const [isRegistering, setIsRegistering] = useState(false);
   const [authForm, setAuthForm] = useState({ username: '', email: '', password: '' });
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
-  // Profile tabs: 'orders' | 'profile'
   const [activeTab, setActiveTab] = useState('orders');
   const [orders, setOrders] = useState([]);
   const [profileForm, setProfileForm] = useState({ username: '', email: '' });
@@ -25,15 +22,14 @@ const Account = () => {
     }
   }, [user]);
 
-  // Handle Register & Sign In
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     setAuthError('');
     setAuthLoading(true);
 
     const endpoint = isRegistering 
-      ? `${STRAPI_URL}/api/auth/local/register` 
-      : `${STRAPI_URL}/api/auth/local`;
+      ? `${API_URL}/api/auth/local/register` 
+      : `${API_URL}/api/auth/local`;
 
     const bodyData = isRegistering 
       ? authForm 
@@ -52,7 +48,6 @@ const Account = () => {
         throw new Error(data.error?.message || 'ავტორიზაციის შეცდომა');
       }
 
-      // Save JWT session
       localStorage.setItem('jwt', data.jwt);
       localStorage.setItem('user', JSON.stringify(data.user));
       setToken(data.jwt);
@@ -64,7 +59,6 @@ const Account = () => {
     }
   };
 
-  // Sign Out
   const handleSignOut = () => {
     localStorage.removeItem('jwt');
     localStorage.removeItem('user');
@@ -72,12 +66,11 @@ const Account = () => {
     setUser(null);
   };
 
-  // Update Profile Details
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setUpdateMsg('');
     try {
-      const res = await fetch(`${STRAPI_URL}/api/users/${user.id}`, {
+      const res = await fetch(`${API_URL}/api/users/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -97,9 +90,6 @@ const Account = () => {
     }
   };
 
-  // ----------------------------------------------------------------
-  // UNAUTHENTICATED VIEW (LOGIN / REGISTER)
-  // ----------------------------------------------------------------
   if (!token) {
     return (
       <div className="account-container">
@@ -148,12 +138,8 @@ const Account = () => {
     );
   }
 
-  // ----------------------------------------------------------------
-  // AUTHENTICATED DASHBOARD (MATCHING YOUR DESIGN SCREENSHOT)
-  // ----------------------------------------------------------------
   return (
     <div className="account-container">
-      {/* 3 Action Buttons Bar */}
       <div className="account-tab-buttons">
         <button
           className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
@@ -187,7 +173,6 @@ const Account = () => {
         </button>
       </div>
 
-      {/* Dynamic Tab Content Area */}
       <div className="account-content-body">
         {activeTab === 'orders' && (
           <div className="orders-section">

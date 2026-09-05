@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { API_URL } from './config';
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // Initialize state directly from localStorage so data persists across refreshes
   const [cart, setCart] = useState(() => {
     try {
       const savedCart = localStorage.getItem('app_cart');
@@ -14,7 +14,6 @@ export const CartProvider = ({ children }) => {
     }
   });
 
-  // Sync state to localStorage whenever the cart updates
   useEffect(() => {
     try {
       localStorage.setItem('app_cart', JSON.stringify(cart));
@@ -22,6 +21,13 @@ export const CartProvider = ({ children }) => {
       console.error('Failed to save cart to localStorage:', error);
     }
   }, [cart]);
+
+  // Helper to format image URLs (Handles relative Strapi paths vs absolute cloud URLs)
+  const formatImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    return `${API_URL}${url}`;
+  };
 
   const addToCart = (product, quantities) => {
     setCart((prevCart) => {
@@ -42,7 +48,7 @@ export const CartProvider = ({ children }) => {
       const existingProductIdx = prevCart.findIndex((item) => item.id === targetId);
 
       if (existingProductIdx > -1) {
-        const newCart = prevCart.map((item, idx) => {
+        return prevCart.map((item, idx) => {
           if (idx !== existingProductIdx) return item;
 
           const updatedVariants = [...item.variants];
@@ -60,8 +66,6 @@ export const CartProvider = ({ children }) => {
 
           return { ...item, variants: updatedVariants };
         });
-
-        return newCart;
       } else {
         let imgUrl = "";
         if (product.cover && product.cover.length > 0) {
@@ -73,7 +77,7 @@ export const CartProvider = ({ children }) => {
           {
             id: targetId,
             title: product.title,
-            coverUrl: imgUrl ? `http://localhost:1337${imgUrl}` : '',
+            coverUrl: formatImageUrl(imgUrl),
             variants: activeVariants,
           },
         ];
@@ -119,7 +123,7 @@ export const CartProvider = ({ children }) => {
           {
             id: targetId,
             title: product.title,
-            coverUrl: imgUrl ? `http://localhost:1337${imgUrl}` : '',
+            coverUrl: formatImageUrl(imgUrl),
             variants: [
               {
                 type: targetVariant.type,

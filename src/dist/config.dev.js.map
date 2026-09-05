@@ -1,0 +1,1 @@
+{"version":3,"sources":["config.js"],"names":["API_URL","process","env","REACT_APP_API_URL"],"mappings":";;;;;;AAAA;AACO,IAAMA,OAAO,GAAGC,OAAO,CAACC,GAAR,CAAYC,iBAAZ,IAAiC,uBAAjD","sourcesContent":["// src/config.js\r\nexport const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:1337';"],"file":"config.dev.js"}
