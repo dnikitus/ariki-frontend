@@ -8,31 +8,39 @@ const News = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/events?populate=*&sort=eventDate:asc`)
-      .then((res) => res.json())
+    let isMounted = true;
+
+    fetch(`${API_URL}/api/events?populate=*`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
-        if (data.data) {
+        if (isMounted && data?.data) {
           setEvents(data.data);
         }
-        setLoading(false);
       })
-      .catch((err) => {
-        console.error('Error loading events:', err);
-        setLoading(false);
+      .catch((err) => console.error('Error loading events:', err))
+      .finally(() => {
+        if (isMounted) setLoading(false);
       });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (loading) return <div className="loading-container">იტვირთება...</div>;
 
   return (
-    <div className="news-page-container">
-      <h2 className="news-page-header">სიახლეები და ღონისძიებები</h2>
-      <div className="news-events-grid">
+    <div className="events-page-container">
+      <div className="timeline-wrapper">
         {events.map((event) => (
           <EventItem
             key={event.id}
             title={event.title}
             description={event.description}
+            image={event.image}
             cover={event.cover}
             eventDate={event.eventDate}
           />

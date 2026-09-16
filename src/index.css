@@ -2364,3 +2364,223 @@ footer {
     font-size: 16px;
   }
 }
+
+/* Container positioning */
+.events-page-container {
+  width: 100%;
+  min-height: calc(100vh - 180px);
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 5rem 1.5rem 8rem 1.5rem;
+}
+
+.timeline-wrapper {
+  max-width: 680px; 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem; 
+}
+
+/* Grid layout - push content column further right */
+.timeline-row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 5rem; /* Increased gap to match right-hand positioning */
+  align-items: flex-start;
+}
+
+/* Date badge alignment */
+.timeline-date-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+.timeline-day-box {
+  background-color: #262c2c; 
+  color: #C3973B; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.badge-day {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.badge-month {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #A36A32; 
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+/* Main Content Column */
+.timeline-content-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  text-align: left; 
+  width: 100%;
+}
+
+/* Title baseline alignment */
+.event-row-title {
+  color: #A36A32; 
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0.6rem 0 1.5rem 0; /* Top margin aligns title with date box */
+  width: 100%; 
+  text-align: left;
+}
+
+/* Align the image container flush to the left, matching the text edge */
+.event-image-container {
+  width: 100%;
+  max-width: 420px; 
+  display: flex;
+  justify-content: flex-start; /* Force left alignment */
+  margin: 0 0 1.5rem 0;        /* Clear horizontal auto margins */
+}
+
+/* Ensure the image block doesn't inherit auto margins */
+.event-row-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #A36A32;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  display: block;
+  object-fit: cover;
+  margin: 0;                   /* Force margin to 0 */
+}
+
+.event-row-description {
+  color: #0d1b1e;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+  font-weight: 400;
+  width: 100%; 
+  text-align: left;
+}
+
+/* Unique container & row definitions */
+.events-page-container {
+  width: 100%;
+  min-height: calc(100vh - 180px);
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 5rem 1.5rem 8rem 1.5rem;
+}
+
+.timeline-wrapper {
+  max-width: 680px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.ariki-timeline-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* Date Badge Styling */
+.ariki-timeline-date-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+.ariki-timeline-day-box {
+  background-color: #262c2c;
+  color: #C3973B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.ariki-badge-day {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ariki-badge-month {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #A36A32;
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+/* Content Alignment - Strict Left Baseline */
+.ariki-event-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
+.ariki-event-title {
+  color: #A36A32;
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0.6rem 0 1.5rem 0;
+  width: 100%;
+  text-align: left;
+}
+
+.ariki-event-image-frame {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 1.5rem 0;
+}
+
+.ariki-event-img {
+  width: 300px;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #A36A32;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  display: block;
+  object-fit: cover;
+  justify-content: center;
+  margin-left: 100px;
+
+}
+
+.ariki-event-text {
+  color: #0d1b1e;
+  font-size: 16px;
+  line-height: 18.4px;
+  margin: 0;
+  font-weight: 400;
+  width: 575px;
+  text-align: left;
+}

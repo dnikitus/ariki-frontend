@@ -3,6 +3,26 @@ import { API_URL } from './config';
 
 const CartContext = createContext();
 
+// Helper to sanitize Strapi v5 Rich Text objects into plain text strings
+export const renderSafeText = (data) => {
+  if (!data) return '';
+  if (typeof data === 'string') return data;
+  if (typeof data === 'number') return String(data);
+  if (Array.isArray(data)) {
+    return data
+      .map((block) => {
+        if (typeof block === 'string') return block;
+        if (block?.children && Array.isArray(block.children)) {
+          return block.children.map((child) => child.text || '').join('');
+        }
+        return '';
+      })
+      .join('\n');
+  }
+  if (typeof data === 'object' && data.text) return data.text;
+  return String(data);
+};
+
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     try {
@@ -36,7 +56,7 @@ export const CartProvider = ({ children }) => {
         .map((index) => {
           const variant = product.variant[index];
           return {
-            type: variant.type,
+            type: renderSafeText(variant.type),
             price: variant.price,
             quantity: quantities[index],
           };
@@ -45,6 +65,7 @@ export const CartProvider = ({ children }) => {
       if (activeVariants.length === 0) return prevCart;
 
       const targetId = product.documentId || product.id;
+      const safeTitle = renderSafeText(product.title);
       const existingProductIdx = prevCart.findIndex((item) => item.id === targetId);
 
       if (existingProductIdx > -1) {
@@ -57,26 +78,26 @@ export const CartProvider = ({ children }) => {
             if (variantIdx > -1) {
               updatedVariants[variantIdx] = {
                 ...updatedVariants[variantIdx],
-                quantity: updatedVariants[variantIdx].quantity + newV.quantity
+                quantity: updatedVariants[variantIdx].quantity + newV.quantity,
               };
             } else {
               updatedVariants.push(newV);
             }
           });
 
-          return { ...item, variants: updatedVariants };
+          return { ...item, title: safeTitle, variants: updatedVariants };
         });
       } else {
-        let imgUrl = "";
+        let imgUrl = '';
         if (product.cover && product.cover.length > 0) {
-          imgUrl = product.cover[0].url || "";
+          imgUrl = product.cover[0].url || '';
         }
 
         return [
           ...prevCart,
           {
             id: targetId,
-            title: product.title,
+            title: safeTitle,
             coverUrl: formatImageUrl(imgUrl),
             variants: activeVariants,
           },
@@ -88,6 +109,8 @@ export const CartProvider = ({ children }) => {
   const addSingleVariantDirectly = (product, targetVariant) => {
     setCart((prevCart) => {
       const targetId = product.documentId || product.id;
+      const safeTitle = renderSafeText(product.title);
+      const safeVariantType = renderSafeText(targetVariant.type);
       const existingProductIdx = prevCart.findIndex((item) => item.id === targetId);
 
       if (existingProductIdx > -1) {
@@ -95,64 +118,67 @@ export const CartProvider = ({ children }) => {
           if (idx !== existingProductIdx) return item;
 
           const updatedVariants = [...item.variants];
-          const variantIdx = updatedVariants.findIndex((v) => v.type === targetVariant.type);
+          const variantIdx = updatedVariants.findIndex((v) => v.type === safeVariantType);
 
           if (variantIdx > -1) {
             updatedVariants[variantIdx] = {
               ...updatedVariants[variantIdx],
-              quantity: updatedVariants[variantIdx].quantity + 1
+              quantity: updatedVariants[variantIdx].quantity + 1,
             };
           } else {
             updatedVariants.push({
-              type: targetVariant.type,
+              type: safeVariantType,
               price: targetVariant.price,
-              quantity: 1
+              quantity: 1,
             });
           }
 
-          return { ...item, variants: updatedVariants };
+          return { ...item, title: safeTitle, variants: updatedVariants };
         });
       } else {
-        let imgUrl = "";
+        let imgUrl = '';
         if (product.cover && product.cover.length > 0) {
-          imgUrl = product.cover[0].url || "";
+          imgUrl = product.cover[0].url || '';
         }
 
         return [
           ...prevCart,
           {
             id: targetId,
-            title: product.title,
+            title: safeTitle,
             coverUrl: formatImageUrl(imgUrl),
             variants: [
               {
-                type: targetVariant.type,
+                type: safeVariantType,
                 price: targetVariant.price,
-                quantity: 1
-              }
-            ]
-          }
+                quantity: 1,
+              },
+            ],
+          },
         ];
       }
     });
   };
 
   const updateQuantity = (productId, variantType, action) => {
+    const safeVariantType = renderSafeText(variantType);
     setCart((prevCart) =>
-      prevCart.map((item) => {
-        if (item.id !== productId) return item;
-        const updatedVariants = item.variants
-          .map((v) => {
-            if (v.type !== variantType) return v;
-            return {
-              ...v,
-              quantity: action === 'plus' ? v.quantity + 1 : Math.max(0, v.quantity - 1),
-            };
-          })
-          .filter((v) => v.quantity > 0);
+      prevCart
+        .map((item) => {
+          if (item.id !== productId) return item;
+          const updatedVariants = item.variants
+            .map((v) => {
+              if (v.type !== safeVariantType) return v;
+              return {
+                ...v,
+                quantity: action === 'plus' ? v.quantity + 1 : Math.max(0, v.quantity - 1),
+              };
+            })
+            .filter((v) => v.quantity > 0);
 
-        return { ...item, variants: updatedVariants };
-      }).filter((item) => item.variants.length > 0)
+          return { ...item, variants: updatedVariants };
+        })
+        .filter((item) => item.variants.length > 0)
     );
   };
 
@@ -166,14 +192,15 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider 
-      value={{ 
-        cart, 
-        addToCart, 
-        addSingleVariantDirectly, 
-        updateQuantity, 
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        addSingleVariantDirectly,
+        updateQuantity,
         removeItem,
-        clearCart 
+        clearCart,
+        renderSafeText,
       }}
     >
       {children}

@@ -42,6 +42,17 @@ const ToastAlert = ({ message, isOpen, onClose }) => {
   );
 };
 
+const renderSafeText = (data) => {
+  if (!data) return '';
+  if (typeof data === 'string') return data;
+  if (Array.isArray(data)) {
+    return data
+      .map((block) => (block.children ? block.children.map((child) => child.text).join('') : ''))
+      .join('\n');
+  }
+  return String(data);
+};
+
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
@@ -86,9 +97,9 @@ const ProductDetailsPage = () => {
   if (loading) return <div className="loading-container">იტვირთება...</div>;
   if (!product) return <div className="loading-container">პროდუქტი ვერ მოიძებნა.</div>;
 
-  const title = product.title;
-  const description = product.description || "";
-  const info = product.info || "";
+  const title = renderSafeText(product.title);
+  const descriptionText = renderSafeText(product.description);
+  const infoText = renderSafeText(product.info);
   const variants = product.variant || [];
 
   let imgUrl = "";
@@ -121,10 +132,10 @@ const ProductDetailsPage = () => {
 
         <div className="details-info-panel">
           <h1 className="details-main-title">{title}</h1>
-          <p className="details-description-text">{description}</p>
+          <p className="details-description-text">{descriptionText}</p>
           
           <div className="details-info-meta">
-            {info.split('\n').map((line, idx) => (
+            {infoText.split('\n').map((line, idx) => (
               <span key={idx} className="info-meta-line">{line}</span>
             ))}
           </div>
@@ -133,7 +144,7 @@ const ProductDetailsPage = () => {
             {variants.map((v, index) => (
               <div key={index} className="details-qty-row">
                 <span className="details-variant-label">
-                  {v.type}: <strong className="details-price-tag">{v.price} ₾</strong>
+                  {renderSafeText(v.type)}: <strong className="details-price-tag">{v.price} ₾</strong>
                 </span>
                 
                 <div className="qty-counter-block">

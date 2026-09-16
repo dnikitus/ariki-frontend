@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from './CartContext'; // Ensure this path points to your CartContext file
-
-const API_URL = 'http://localhost:1337';
+import { useCart } from './CartContext';
+import { API_URL } from './config';
+import './index.css';
 
 const Profile = () => {
-  // Cart Context Helper
   const { clearCart } = useCart();
 
-  // Session State
   const [token, setToken] = useState(localStorage.getItem('jwt') || null);
   const [user, setUser] = useState(() => {
     try {
@@ -17,11 +15,9 @@ const Profile = () => {
     }
   });
 
-  // View States: 'login' | 'register' | 'recover' | 'dashboard'
   const [viewState, setViewState] = useState(token ? 'dashboard' : 'login');
   const [dashboardTab, setDashboardTab] = useState('profile');
 
-  // Auth Forms State
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [recoverEmail, setRecoverEmail] = useState('');
   const [registerForm, setRegisterForm] = useState({
@@ -33,7 +29,6 @@ const Profile = () => {
     confirmPassword: ''
   });
 
-  // Profile Edit State (with address, city, personalId)
   const [editProfile, setEditProfile] = useState({
     firstName: '',
     lastName: '',
@@ -44,19 +39,16 @@ const Profile = () => {
     address: ''
   });
 
-  // Password Change State
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
     confirmNewPassword: ''
   });
 
-  // Status Banners
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Auto-hide success message after 1.2 seconds
   useEffect(() => {
     if (successMsg) {
       const timer = setTimeout(() => {
@@ -66,7 +58,6 @@ const Profile = () => {
     }
   }, [successMsg]);
 
-  // Keep input fields in sync with updated user data
   useEffect(() => {
     if (user) {
       setEditProfile({
@@ -92,10 +83,7 @@ const Profile = () => {
     localStorage.setItem('user', JSON.stringify(userData));
     setToken(jwt);
     setUser(userData);
-    
-    // Clear old cart when entering a new authenticated session
     clearCart();
-
     setViewState('dashboard');
     setErrorMsg('');
   };
@@ -126,7 +114,7 @@ const Profile = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error?.message || 'რეგისტრაციის შეცდომა');
 
-      // Sync user profile fields with Strapi user model
+      // Update custom user profile fields using user ID
       const updateResponse = await fetch(`${API_URL}/api/users/${data.user.id}`, {
         method: 'PUT',
         headers: {
@@ -149,7 +137,7 @@ const Profile = () => {
     }
   };
 
-  // 2. LOGIN (Fetches latest user details)
+  // 2. LOGIN
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -168,7 +156,6 @@ const Profile = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error?.message || 'ავტორიზაციის შეცდომა');
 
-      // Fetch full me endpoint to ensure custom fields (address, etc.) are loaded
       const meResponse = await fetch(`${API_URL}/api/users/me`, {
         headers: { Authorization: `Bearer ${data.jwt}` }
       });
@@ -206,12 +193,18 @@ const Profile = () => {
     }
   };
 
-  // 4. UPDATE USER PROFILE (Saves address, city, personalId to Strapi)
+  // 4. UPDATE USER PROFILE (Uses PUT /api/users/:id)
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
     setSuccessMsg('');
+
+    if (!user || !user.id) {
+      setErrorMsg('მომხმარებლის მონაცემები ვერ მოიძებნა');
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch(`${API_URL}/api/users/${user.id}`, {
@@ -234,7 +227,6 @@ const Profile = () => {
       const updatedUser = await response.json();
       if (!response.ok) throw new Error(updatedUser.error?.message || 'პროფილის განახლება ვერ მოხერხდა');
 
-      // Save updated info in local state and storage
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       setSuccessMsg('პროფილი წარმატებით განახლდა!');
@@ -288,16 +280,12 @@ const Profile = () => {
   const handleSignOut = () => {
     localStorage.removeItem('jwt');
     localStorage.removeItem('user');
-
-    // Reset the cart state in memory and wipe 'app_cart' from localStorage
     clearCart();
-
     setToken(null);
     setUser(null);
     setViewState('login');
   };
 
-  // DASHBOARD VIEW
   if (viewState === 'dashboard' && user) {
     return (
       <div className="auth-page-container">
@@ -345,7 +333,6 @@ const Profile = () => {
               {errorMsg && <div className="auth-error-banner">{errorMsg}</div>}
               {successMsg && <div className="auth-success-banner">{successMsg}</div>}
 
-              {/* PROFILE EDIT SECTION */}
               <div className="profile-section">
                 <h3 className="section-title">პროფილის რედაქტირება</h3>
                 <form onSubmit={handleUpdateProfile} className="auth-form-block">
@@ -404,7 +391,6 @@ const Profile = () => {
                 </form>
               </div>
 
-              {/* PASSWORD CHANGE SECTION */}
               <div className="profile-section">
                 <h3 className="section-title">პაროლის შეცვლა</h3>
                 <form onSubmit={handleChangePassword} className="auth-form-block">
@@ -444,7 +430,6 @@ const Profile = () => {
     );
   }
 
-  // RECOVER VIEW
   if (viewState === 'recover') {
     return (
       <div className="auth-page-container">
@@ -476,7 +461,6 @@ const Profile = () => {
     );
   }
 
-  // REGISTER VIEW
   if (viewState === 'register') {
     return (
       <div className="auth-page-container">
@@ -546,7 +530,6 @@ const Profile = () => {
     );
   }
 
-  // LOGIN VIEW
   return (
     <div className="auth-page-container">
       <div className="auth-card-wrapper">

@@ -42,6 +42,17 @@ const ToastAlert = ({ message, isOpen, onClose }) => {
   );
 };
 
+const renderSafeText = (data) => {
+  if (!data) return '';
+  if (typeof data === 'string') return data;
+  if (Array.isArray(data)) {
+    return data
+      .map((block) => (block.children ? block.children.map((child) => child.text).join('') : ''))
+      .join('\n');
+  }
+  return String(data);
+};
+
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [toastMessage, setToastMessage] = useState('');
@@ -59,7 +70,9 @@ const ProductsPage = () => {
 
   const handleAddToCart = (product, variant) => {
     addSingleVariantDirectly(product, variant);
-    setToastMessage(`დაემატა კალათაში: ${product.title} (${variant.type})`);
+    const safeTitle = renderSafeText(product.title);
+    const safeType = renderSafeText(variant.type);
+    setToastMessage(`დაემატა კალათაში: ${safeTitle} (${safeType})`);
     setShowToast(true);
   };
 
@@ -73,7 +86,7 @@ const ProductsPage = () => {
 
       <div className="products-grid">
         {products.map((product) => {
-          const title = product.title;
+          const title = renderSafeText(product.title);
           const rawVariants = product.variant || [];
           
           const variants = [...rawVariants].sort((a, b) => {
@@ -111,7 +124,7 @@ const ProductsPage = () => {
                 {variants.map((v, index) => (
                   <div key={index} className="product-price-row">
                     <span className="price-label">
-                      {v.type}: <strong className="price-amount">{v.price} ₾</strong>
+                      {renderSafeText(v.type)}: <strong className="price-amount">{v.price} ₾</strong>
                     </span>
                     <button 
                       onClick={() => handleAddToCart(product, v)}
