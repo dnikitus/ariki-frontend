@@ -4,9 +4,11 @@ import { useCart } from './CartContext';
 import './index.css';
 import trashIconImg from './assets/trash.png';
 import bagIconImg from './assets/shopping-bag-add-200h.png';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
   const { cart, updateQuantity, removeItem } = useCart();
+  const navigate = useNavigate();
 
   const calculateGrandTotal = () => {
     return cart.reduce((acc, item) => {
@@ -91,7 +93,7 @@ const CartPage = () => {
           <div className="cart-grand-total-text">
             სულ გადასახდელი: <span className="total-sum-highlight">{calculateGrandTotal()} ₾</span>
           </div>
-          <button className="cart-checkout-submit-btn" onClick={() => alert('შეკვეთა გაფორმებულია!')}>
+          <button className="cart-checkout-submit-btn" onClick={() => navigate('/checkout')}>
             <img src={bagIconImg} alt="Checkout" className="cart-checkout-btn-icon" />
             შეკვეთის გაფორმება
           </button>

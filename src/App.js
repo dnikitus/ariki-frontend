@@ -12,6 +12,7 @@ import News from "./News";
 import Contact from "./Contact";
 import About from "./About";
 import Profile from "./Profile";
+import Checkout from './Checkout';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/checkout" element={<Checkout />} />
             </Routes>
           </main>
 
