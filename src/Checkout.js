@@ -77,12 +77,12 @@ export default function Checkout() {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.checkoutBox}>
+    <div className="checkout-container">
+      <div className="checkout-box">
         {/* Cart Items List */}
-        <div style={styles.itemsList}>
+        <div className="checkout-items-list">
           {activeCartLines.length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#666' }}>
+            <p className="checkout-empty-text">
               კალათა ცარიელია
             </p>
           ) : (
@@ -95,20 +95,20 @@ export default function Checkout() {
               const imageUrl = getImageUrl(line);
 
               return (
-                <div key={`${line.id || index}-${line.variantType || index}`} style={styles.itemCard}>
+                <div key={`${line.id || index}-${line.variantType || index}`} className="checkout-item-card">
                   <img
                     src={imageUrl}
                     alt={displayTitle}
-                    style={styles.itemImage}
+                    className="checkout-item-image"
                     onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/80?text=No+Image';
                     }}
                   />
-                  <div style={styles.itemDetails}>
-                    <h4 style={styles.itemTitle}>{displayTitle}</h4>
-                    <p style={styles.itemMeta}>ფასი: {line.price} ₾</p>
-                    <p style={styles.itemMeta}>რაოდენობა: {line.quantity}</p>
-                    <p style={styles.itemMeta}>ჯამი: {itemTotal} ₾</p>
+                  <div className="checkout-item-details">
+                    <h4 className="checkout-item-title">{displayTitle}</h4>
+                    <p className="checkout-item-meta">ფასი: {line.price} ₾</p>
+                    <p className="checkout-item-meta">რაოდენობა: {line.quantity}</p>
+                    <p className="checkout-item-meta">ჯამი: {itemTotal} ₾</p>
                   </div>
                 </div>
               );
@@ -117,30 +117,30 @@ export default function Checkout() {
         </div>
 
         {/* Delivery Checkbox & Total */}
-        <div style={styles.summarySection}>
-          <label style={styles.checkboxLabel}>
+        <div className="checkout-summary-section">
+          <label className="checkout-checkbox-label">
             მიტანის სერვისი (საფასური 5 ₾):
             <input
               type="checkbox"
               checked={includeDelivery}
               onChange={(e) => setIncludeDelivery(e.target.checked)}
-              style={styles.checkbox}
+              className="checkout-checkbox"
             />
           </label>
 
-          <div style={styles.totalRow}>
+          <div className="checkout-total-row">
             <strong>სულ გადასახდელი: {total} ₾</strong>
           </div>
 
           <button
             onClick={handlePayment}
-            style={styles.payButton}
+            className="checkout-pay-button"
             disabled={activeCartLines.length === 0}
           >
-            💳 <span style={styles.invisible}>1  </span> გადახდა
+            💳 <span className="checkout-invisible-space">1  </span> გადახდა
           </button>
 
-          <p style={styles.paymentNote}>
+          <p className="checkout-payment-note">
             გადახდა შესაძლებელია ნებისმიერი ტიპის საბანკო ბარათით
           </p>
         </div>
@@ -148,109 +148,3 @@ export default function Checkout() {
     </div>
   );
 }
-
-const styles = {
-  container: {
-    backgroundColor: 'transparent',
-    minHeight: '80vh',
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '50px'
-  },
-
-  invisible: {
-    color: '#0C2325',
-  },
-
-  checkoutBox: {
-    width: '100%',
-    maxWidth: '700px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '25px',
-  },
-  itemsList: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
-  },
-  itemCard: {
-    backgroundColor: 'transparent',
-    padding: '20px',
-    display: 'flex',
-    gap: '15px',
-    alignItems: 'center',
-    boxShadow: '6px 6px 6px rgb(212, 212, 212)',
-  },
-  itemImage: {
-    width: '100px',
-    height: '100px',
-    objectFit: 'cover',
-    borderRadius: '6px',
-    backgroundColor: '#ddd',
-  },
-  itemDetails: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px',
-    color: '#333',
-    fontSize: '14px',
-  },
-  itemTitle: {
-    margin: 0,
-    fontSize: '18px',
-    fontWeight: '500',
-    color: '#A36A32',
-  },
-  itemMeta: {
-    margin: 0,
-    color: '#0C2325',
-    fontSize: '16px',
-  },
-  summarySection: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '12px',
-    width: '100%',
-  },
-  checkboxLabel: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    fontSize: '18px',
-    color: '#0C2325',
-    cursor: 'pointer',
-  },
-  checkbox: {
-    width: '16px',
-    height: '16px',
-    cursor: 'pointer',
-  },
-  totalRow: {
-    fontSize: '18px',
-    color: '#0C2325',
-    marginTop: '5px',
-    fontWeight: '300',
-  },
-  payButton: {
-    backgroundColor: '#1b1b1b',
-    color: '#F1DFB8',
-    border: 'none',
-    padding: '12px 35px',
-    borderRadius: '6px',
-    fontSize: '16px',
-    cursor: 'pointer',
-    fontWeight: '500',
-    marginTop: '5px',
-    transition: 'background-color 0.2s',
-  },
-  paymentNote: {
-    fontSize: '14px',
-    color: '#0C2325',
-    margin: 0,
-    textAlign: 'center',
-  },
-};
